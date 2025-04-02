@@ -1,22 +1,28 @@
-name: My pet app 🐾
+name: Feature voting tool 🥇
 entities:
-  Owner:
+  Feature:
     properties:
-      - name
-      - { name: birthdate, type: date }
+      - { name: title }
+      - { name: description, type: text }
+      - { name: votes, type: number }
+      - { name: createdAt, type: date }
+      - {
+          name: status,
+          type: choice,
+          options: { values: ["open", "in progress", "closed"] },
+        }
 
-  Cat:
+  Comment:
     properties:
-      - name
-      - { name: age, type: number }
-      - { name: birthdate, type: date }
+      - author
+      - { name: content, type: text }
+      - { name: createdAt, type: date }
     belongsTo:
-      - Owner
+      - Feature
 
-  Homepage:
-    nameSingular: Home content
-    single: true
-    properties:
-      - title
-      - { name: description, type: richText }
-      - { name: cover, type: image }
+endpoints:
+  upvote:
+    path: /features/:id/upvote
+    method: PATCH
+    description: Upvote a feature (increment the votes count)
+    handler: upvoteFeature
